@@ -9,6 +9,10 @@ app.use(express.json());
 // Enable CORS for all routes
 app.use(cors());
 
+// Import and mount the bookings route
+const bookingsRouter = require('./routes/bookings');
+app.use('/api/bookings', bookingsRouter);
+
 // Basic route to test the server
 app.get('/', (req, res) => {
   res.send('Express server is running!');

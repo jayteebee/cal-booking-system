@@ -13,6 +13,10 @@ app.use(cors());
 const bookingsRouter = require('./routes/bookings');
 app.use('/api/bookings', bookingsRouter);
 
+// Import and mount the inventory route
+const inventoryRouter = require('./routes/inventory');
+app.use('/api/inventory', inventoryRouter);
+
 // Basic route to test the server
 app.get('/', (req, res) => {
   res.send('Express server is running!');

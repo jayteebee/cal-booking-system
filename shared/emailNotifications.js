@@ -2,17 +2,17 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
-// Retrieve email service credentials from environment variables.
-const emailService = process.env.EMAIL_SERVICE;
-const emailUsername = process.env.EMAIL_USERNAME;
-const emailPassword = process.env.EMAIL_PASSWORD;
-
-// Create a transporter using your email service credentials.
 const transporter = nodemailer.createTransport({
-  service: emailService,
+  host: process.env.EMAIL_HOST,           // e.g., smtp.office365.com
+  port: process.env.EMAIL_PORT,           // e.g., 587
+  secure: false,                          // false for port 587 (STARTTLS will be used)
   auth: {
-    user: emailUsername,
-    pass: emailPassword
+    user: process.env.EMAIL_USERNAME,     // your Outlook email address
+    pass: process.env.EMAIL_PASSWORD,     // your Outlook password or app password
+  },
+  tls: {
+    // This setting is often necessary to avoid certificate validation issues
+    rejectUnauthorized: false
   }
 });
 
@@ -48,7 +48,7 @@ async function sendEmail(templateType, recipientEmail, data) {
   }
 
   const mailOptions = {
-    from: emailUsername,
+    from: process.env.EMAIL_USERNAME,
     to: recipientEmail,
     subject,
     html: htmlContent,

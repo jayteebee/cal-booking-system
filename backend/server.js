@@ -12,6 +12,13 @@ app.use(express.json());
 // Enable CORS for all routes
 app.use(cors());
 
+// Set up session middleware
+app.use(session({
+    secret: 'your_secret_key', // Replace with a secure key (and store it in .env for production)
+    resave: false,
+    saveUninitialized: false,
+  }));
+
 // Import and mount the bookings route
 const bookingsRouter = require('./routes/bookings');
 app.use('/api/bookings', bookingsRouter);
@@ -19,6 +26,10 @@ app.use('/api/bookings', bookingsRouter);
 // Import and mount the inventory route
 const inventoryRouter = require('./routes/inventory');
 app.use('/api/inventory', inventoryRouter);
+
+// Import and mount the admin routes
+const adminRouter = require('./routes/admin');
+app.use('/api/admin', adminRouter);
 
 // Basic route to test the server
 app.get('/', (req, res) => {

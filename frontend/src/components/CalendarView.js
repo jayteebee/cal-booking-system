@@ -6,7 +6,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 const localizer = momentLocalizer(moment);
 
-function CalendarView({ events, onSelectEvent, onNavigate, onViewChange }) {
+function CalendarView({ events, onSelectEvent, onSelectSlot, onNavigate, onViewChange }) {
   return (
     <div style={{ height: '600px', margin: '20px' }}>
       <Calendar
@@ -16,7 +16,9 @@ function CalendarView({ events, onSelectEvent, onNavigate, onViewChange }) {
         endAccessor="end"
         defaultView="month"
         views={['month', 'week', 'day']}
+        selectable
         onSelectEvent={onSelectEvent}
+        onSelectSlot={onSelectSlot}
         onNavigate={onNavigate}
         onView={onViewChange}
       />

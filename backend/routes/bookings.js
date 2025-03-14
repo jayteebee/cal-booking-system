@@ -64,6 +64,12 @@ router.post('/', (req, res) => {
   });
 });
 
+// GET /api/bookings - List all bookings
+router.get('/', (req, res) => {
+    res.json(bookings);
+  });
+  
+
 /**
  * PUT /api/bookings/:id/cancel
  * Cancel an existing booking.
@@ -103,6 +109,7 @@ router.put('/:id/cancel', (req, res) => {
    * PUT /api/bookings/:id/rearrange
    * Rearrange an existing booking.
    */
+
   router.put('/:id/rearrange', (req, res) => {
     const bookingId = parseInt(req.params.id);
     const booking = bookings.find(b => b.id === bookingId);
@@ -120,6 +127,9 @@ router.put('/:id/cancel', (req, res) => {
     // For simplicity, we'll update only the date and duration.
     booking.date = newDate;
     booking.duration = newDuration;
+
+      // Update the booking status to "Confirmed" to reactivate it
+  booking.status = 'Confirmed';
     
     // Simulate sending rearrangement email and audit logging here
   

@@ -9,7 +9,7 @@ function BookingView() {
 
   // Fetch bookings from the backend
   useEffect(() => {
-    fetch('http://localhost:5000/api/bookings')
+    fetch('http://localhost:5001/api/bookings')
       .then((response) => response.json())
       .then((data) => {
         // Assuming 'data' is an array of booking objects, convert them into events.

@@ -8,6 +8,10 @@ let dummyInventory = {
   'A70-95': 5, // Example: 5 kits available for camera model A70 with a 95° lens
 };
 
+// Dummy in-memory bookings store
+let bookings = [];
+let nextBookingId = 1;
+
 router.post('/', (req, res) => {
   // Destructure booking details from request body
   const { date, duration, cameraModel, lensType, quantity, customerEmail } = req.body;
@@ -27,6 +31,22 @@ router.post('/', (req, res) => {
   // Reserve stock: decrement the dummy inventory
   dummyInventory[key] -= quantity;
 
+  // Create booking object
+  const booking = {
+    id: nextBookingId++,
+    date,
+    duration,
+    cameraModel,
+    lensType,
+    quantity,
+    customerEmail,
+    status: 'Confirmed'
+  };
+
+  // Log booking (in memory)
+  bookings.push(booking);
+
+
   // Simulate logging the booking in Google Sheets
   // (In the future, replace this with a call to logBooking(bookingDetails))
   
@@ -43,5 +63,70 @@ router.post('/', (req, res) => {
     remainingStock: dummyInventory[key],
   });
 });
+
+/**
+ * PUT /api/bookings/:id/cancel
+ * Cancel an existing booking.
+ */
+router.put('/:id/cancel', (req, res) => {
+    const bookingId = parseInt(req.params.id);
+    const booking = bookings.find(b => b.id === bookingId);
+    
+    if (!booking) {
+      return res.status(404).json({ error: 'Booking not found' });
+    }
+  
+    // Update booking status to "Cancelled"
+    booking.status = 'Cancelled';
+  
+    // Optionally, increase the inventory count back
+    const key = `${booking.cameraModel}-${booking.lensType}`;
+    dummyInventory[key] = (dummyInventory[key] || 0) + booking.quantity;
+  
+    // Simulate alternative dates suggestion (for demonstration)
+    const alternativeDates = [
+      "2025-04-25",
+      "2025-04-26",
+      "2025-04-27"
+    ];
+  
+    // Simulate sending cancellation email and audit logging here
+  
+    return res.status(200).json({
+      message: 'Booking cancelled',
+      booking,
+      alternativeDates,
+    });
+  });
+  
+  /**
+   * PUT /api/bookings/:id/rearrange
+   * Rearrange an existing booking.
+   */
+  router.put('/:id/rearrange', (req, res) => {
+    const bookingId = parseInt(req.params.id);
+    const booking = bookings.find(b => b.id === bookingId);
+    
+    if (!booking) {
+      return res.status(404).json({ error: 'Booking not found' });
+    }
+  
+    // Extract new booking details from request body (e.g., new date and/or duration)
+    const { newDate, newDuration } = req.body;
+    if (!newDate || !newDuration) {
+      return res.status(400).json({ error: 'Missing new booking details' });
+    }
+  
+    // For simplicity, we'll update only the date and duration.
+    booking.date = newDate;
+    booking.duration = newDuration;
+    
+    // Simulate sending rearrangement email and audit logging here
+  
+    return res.status(200).json({
+      message: 'Booking rearranged',
+      booking
+    });
+  });
 
 module.exports = router;

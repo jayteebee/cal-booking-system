@@ -10,6 +10,7 @@ import EditIcon from '@mui/icons-material/Edit';
 
 function BookingManagementComponent() {
   const [bookings, setBookings] = useState([]);
+  console.log("bookings: ",bookings);
   const [openRearrangeDialog, setOpenRearrangeDialog] = useState(false);
   const [currentBooking, setCurrentBooking] = useState(null);
   const [newDate, setNewDate] = useState('');
@@ -80,6 +81,7 @@ function BookingManagementComponent() {
             <TableRow>
               <TableCell>ID</TableCell>
               <TableCell>Date</TableCell>
+              <TableCell>End Date</TableCell>
               <TableCell>Duration</TableCell>
               <TableCell>Camera Model</TableCell>
               <TableCell>Lens Type</TableCell>
@@ -94,6 +96,7 @@ function BookingManagementComponent() {
               <TableRow key={booking.id}>
                 <TableCell>{booking.id}</TableCell>
                 <TableCell>{booking.date}</TableCell>
+                <TableCell>{booking.endDate}</TableCell>
                 <TableCell>{booking.duration}</TableCell>
                 <TableCell>{booking.cameraModel}</TableCell>
                 <TableCell>{booking.lensType}</TableCell>

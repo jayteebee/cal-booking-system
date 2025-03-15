@@ -31,11 +31,41 @@ router.post('/', (req, res) => {
   // Reserve stock: decrement the dummy inventory
   dummyInventory[key] -= quantity;
 
-  // Create booking object
+    // Compute endDate based on duration
+    let endDate;
+    const durationLower = duration.toLowerCase();
+    if (durationLower.includes('night')) {
+      const nights = parseInt(duration);
+      if (!isNaN(nights)) {
+        let start = new Date(date);
+        let end = new Date(start);
+        end.setDate(start.getDate() + nights - 1);
+        endDate = end.toISOString().slice(0, 10);
+      } else {
+        endDate = date;
+      }
+    } else if (durationLower.includes('rental') || durationLower.includes('month')) {
+      // Example: "6-month rental" will add 6 months and subtract one day.
+      const months = parseInt(duration);
+      if (!isNaN(months)) {
+        let start = new Date(date);
+        let end = new Date(start);
+        end.setMonth(start.getMonth() + months);
+        end.setDate(end.getDate() - 1);
+        endDate = end.toISOString().slice(0, 10);
+      } else {
+        endDate = date;
+      }
+    } else {
+      endDate = date;
+    }
+  
+  // Create booking object including the computed endDate
   const booking = {
     id: nextBookingId++,
     date,
     duration,
+    endDate,
     cameraModel,
     lensType,
     quantity,

@@ -1,6 +1,8 @@
 // src/components/AdminDashboard.js
 import React, { useState, useEffect } from 'react';
 import InventoryManagementComponent from './InventoryManagementComponent';
+import BookingManagementComponent from './BookingManagementComponent';
+
 
 function AdminDashboard() {
   const [view, setView] = useState('inventory');
@@ -52,12 +54,7 @@ function AdminDashboard() {
       </div>
       
       {view === 'inventory' && <InventoryManagementComponent />}
-      {view === 'bookings' && (
-        <div>
-          <h2>Booking Management</h2>
-          {/* Future: Implement detailed booking management UI */}
-        </div>
-      )}
+      {view === 'bookings' && <BookingManagementComponent />}
       {view === 'audit' && (
         <div>
           <h2>Audit Logs</h2>

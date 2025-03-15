@@ -5,8 +5,8 @@ const router = express.Router();
 // Dummy in-memory inventory array.
 // Each item has an id, cameraModel, lensType, quantity, and location.
 let inventory = [
-  { id: 1, cameraModel: 'A70', lensType: '95', quantity: 5, location: 'Location1' },
-  { id: 2, cameraModel: 'A70', lensType: '51', quantity: 3, location: 'Location2' },
+  { id: 1, cameraModel: 'A70', lensType: '95', quantity: 50, location: 'Location1' },
+  { id: 2, cameraModel: 'A70', lensType: '51', quantity: 30, location: 'Location2' },
 ];
 let nextId = 3;
 

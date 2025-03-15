@@ -21,7 +21,7 @@ function BookingFormComponent({ selectedDate }) {
       quantity,
       customerEmail,
     };
-    
+    console.log('Booking data:', bookingData);
     try {
       const response = await fetch('http://localhost:5001/api/bookings', {
         method: 'POST',
@@ -63,14 +63,24 @@ function BookingFormComponent({ selectedDate }) {
             onChange={(e) => setCameraModel(e.target.value)}
           />
         </div>
+
         <div>
           <label>Lens Type:</label>
-          <input
-            type="text"
-            value={lensType}
+
+          <select
+          type="checkbox"
+          value={lensType}
             onChange={(e) => setLensType(e.target.value)}
-          />
+          >
+         <option value="29">29°</option>
+         <option value="42">42°</option>
+         <option value="51">51°</option>
+         <option value="80">80°</option>
+         <option value="95">95°</option>
+       </select>
+
         </div>
+
         <div>
           <label>Quantity:</label>
           <input

@@ -5,7 +5,7 @@ const router = express.Router();
 // Dummy in-memory inventory data for demonstration.
 // Key format: "cameraModel-lensType" (e.g., "A70-95")
 let dummyInventory = {
-  'A70-95': 5, // Example: 5 kits available for camera model A70 with a 95° lens
+  'A70-95': 50, // Example: 5 kits available for camera model A70 with a 95° lens
 };
 
 // Dummy in-memory bookings store

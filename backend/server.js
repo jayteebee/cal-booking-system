@@ -33,6 +33,10 @@ app.use('/api/inventory', inventoryRouter);
 const adminRouter = require('./routes/admin');
 app.use('/api/admin', adminRouter);
 
+// server.js (snippet)
+const auditRouter = require('./routes/audit');
+app.use('/api/audit', auditRouter);
+
 // Basic route to test the server
 app.get('/', (req, res) => {
   res.send('Express server is running!');

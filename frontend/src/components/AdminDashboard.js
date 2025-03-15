@@ -1,5 +1,6 @@
 // src/components/AdminDashboard.js
 import React, { useState, useEffect } from 'react';
+import InventoryManagementComponent from './InventoryManagementComponent';
 
 function AdminDashboard() {
   const [view, setView] = useState('inventory');
@@ -50,27 +51,17 @@ function AdminDashboard() {
         <button onClick={() => setView('audit')}>Audit Logs</button>
       </div>
       
-      {view === 'inventory' && (
-        <div>
-          <h2>Inventory Management</h2>
-          <pre>{JSON.stringify(inventory, null, 2)}</pre>
-          {/* Future: Add forms and controls for adding/editing/deleting inventory items */}
-        </div>
-      )}
-      
+      {view === 'inventory' && <InventoryManagementComponent />}
       {view === 'bookings' && (
         <div>
           <h2>Booking Management</h2>
-          <pre>{JSON.stringify(bookings, null, 2)}</pre>
-          {/* Future: Add controls to cancel/rearrange bookings */}
+          {/* Future: Implement detailed booking management UI */}
         </div>
       )}
-      
       {view === 'audit' && (
         <div>
           <h2>Audit Logs</h2>
-          <pre>{JSON.stringify(auditLogs, null, 2)}</pre>
-          {/* Future: Display detailed audit logs */}
+          {/* Future: Display audit logs */}
         </div>
       )}
     </div>

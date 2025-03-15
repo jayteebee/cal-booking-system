@@ -1,55 +1,116 @@
 // shared/googleSheets.js
+const { google } = require('googleapis');
+const path = require('path');
 require('dotenv').config();
 
-const GOOGLE_SHEETS_API_KEY = process.env.GOOGLE_SHEETS_API_KEY;
 const SHEET_ID = process.env.SHEET_ID;
 
+// Configure authentication using the service account credentials.
+const auth = new google.auth.GoogleAuth({
+  keyFile: path.join(__dirname, 'credentials.json'), // updated path to credentials.json
+  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+});
+
+const sheets = google.sheets({ version: 'v4', auth });
+
 /**
- * Simulates fetching inventory data from Google Sheets.
- * @returns {Promise<Array>} Dummy inventory data.
+ * Retrieves inventory data from the "Inventory" sheet.
+ * Assumes headers in row 1 (e.g., "id", "cameraModel", "lensType", "quantity", "location").
  */
 async function getInventoryData() {
-  console.log('Fetching inventory data from Google Sheets...');
-  // Dummy data representing rows from the inventory sheet.
-  return [
-    { id: 1, cameraModel: 'A70', lensType: '95', quantity: 5, location: 'Location1' },
-    { id: 2, cameraModel: 'A70', lensType: '51', quantity: 3, location: 'Location2' },
-  ];
+  try {
+    const res = await sheets.spreadsheets.values.get({
+      spreadsheetId: SHEET_ID,
+      range: 'Inventory!A1:E',
+    });
+    const rows = res.data.values;
+    if (rows && rows.length) {
+      const header = rows[0];
+      const data = rows.slice(1).map((row) => {
+        let obj = {};
+        header.forEach((col, idx) => {
+          obj[col] = row[idx];
+        });
+        return obj;
+      });
+      return data;
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.error('Error fetching inventory from Google Sheets:', error);
+    throw error;
+  }
 }
 
 /**
- * Simulates updating inventory data to Google Sheets.
- * @param {Array|Object} updatedData - The updated inventory data.
- * @returns {Promise<Object>} Status of the update operation.
+ * Updates the entire inventory data in the "Inventory" sheet.
+ * This function assumes updatedData is a 2D array (rows) matching your sheet’s format.
  */
 async function updateInventoryData(updatedData) {
-  console.log('Updating inventory data to Google Sheets...');
-  // In a real implementation, you would call the Google Sheets API here.
-  return { success: true, updatedData };
+  try {
+    const res = await sheets.spreadsheets.values.update({
+      spreadsheetId: SHEET_ID,
+      range: 'Inventory!A2', // starting from row 2 (assuming row 1 has headers)
+      valueInputOption: 'USER_ENTERED',
+      requestBody: {
+        values: updatedData,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.error('Error updating inventory in Google Sheets:', error);
+    throw error;
+  }
 }
 
 /**
- * Simulates logging a new booking to Google Sheets.
- * @param {Object} bookingDetails - Details of the booking.
- * @returns {Promise<Object>} Confirmation of logging.
+ * Logs a booking by appending a row to the "Bookings" sheet.
+ * The row format should match your sheet's expected columns.
  */
 async function logBooking(bookingDetails) {
-  console.log('Logging booking to Google Sheets...');
-  // In a real implementation, append a new row to the booking log sheet.
-  return { success: true, bookingDetails };
+  try {
+    const res = await sheets.spreadsheets.values.append({
+      spreadsheetId: SHEET_ID,
+      range: 'Bookings!A1',
+      valueInputOption: 'USER_ENTERED',
+      insertDataOption: 'INSERT_ROWS',
+      requestBody: {
+        values: [Object.values(bookingDetails)],
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.error('Error logging booking to Google Sheets:', error);
+    throw error;
+  }
 }
 
 /**
- * Simulates logging an audit event to Google Sheets.
- * @param {string} actionDescription - Description of the action.
- * @param {Object|null} admin - Admin details, if applicable.
- * @param {Object} details - Additional details of the action.
- * @returns {Promise<Object>} Confirmation of logging.
+ * Logs an audit event by appending a row to the "AuditLog" sheet.
  */
 async function logAudit(actionDescription, admin, details) {
-  console.log('Logging audit event to Google Sheets...');
-  // In a real implementation, append a new row to an audit log sheet.
-  return { success: true, actionDescription, admin, details };
+  try {
+    const row = [
+      new Date().toISOString(),
+      actionDescription,
+      admin ? admin.username : '',
+      JSON.stringify(details),
+    ];
+    const res = await sheets.spreadsheets.values.append({
+      spreadsheetId: SHEET_ID,
+      range: 'AuditLog!A1',
+      valueInputOption: 'USER_ENTERED',
+      insertDataOption: 'INSERT_ROWS',
+      requestBody: {
+        values: [row],
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.error('Error logging audit event to Google Sheets:', error);
+    throw error;
+  }
 }
 
 module.exports = {

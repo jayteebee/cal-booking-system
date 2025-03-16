@@ -73,7 +73,7 @@
 // routes/inventory.js
 const express = require('express');
 const router = express.Router();
-const { getInventoryData, updateInventoryData } = require('../shared/googleSheets');
+const { getInventoryData, updateInventoryData } = require('../../shared/googleSheets.js');
 
 // GET /api/inventory: Retrieve current inventory from Google Sheets.
 router.get('/', async (req, res) => {

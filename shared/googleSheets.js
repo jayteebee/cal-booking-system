@@ -94,7 +94,7 @@ async function logBooking(bookingDetails) {
   try {
     const res = await sheets.spreadsheets.values.append({
       spreadsheetId: SHEET_ID,
-      range: 'Bookings!A1',
+      range: 'Sheet1',
       valueInputOption: 'USER_ENTERED',
       insertDataOption: 'INSERT_ROWS',
       requestBody: {

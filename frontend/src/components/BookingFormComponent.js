@@ -51,7 +51,7 @@ function BookingFormComponent({ selectedDate }) {
         Booking Form for {selectedDate}
       </Typography>
       <Grid container spacing={2}>
-        <Grid xs={12} sm={6}>
+        <Grid size={{xs: 12, sm: 6}}>
           <TextField
             select
             label="Rental Duration"
@@ -66,7 +66,7 @@ function BookingFormComponent({ selectedDate }) {
             <MenuItem value="6-month rental">6-month rental (£6000 total)</MenuItem>
           </TextField>
         </Grid>
-        <Grid xs={12} sm={6}>
+        <Grid size={{xs: 12, sm: 6}}>
           <TextField
             label="Camera Model"
             fullWidth
@@ -74,7 +74,7 @@ function BookingFormComponent({ selectedDate }) {
             onChange={(e) => setCameraModel(e.target.value)}
           />
         </Grid>
-        <Grid xs={12} sm={6}>
+        <Grid size={{xs: 12, sm: 6}}>
           <TextField
             label="Lens Type"
             fullWidth
@@ -82,7 +82,7 @@ function BookingFormComponent({ selectedDate }) {
             onChange={(e) => setLensType(e.target.value)}
           />
         </Grid>
-        <Grid xs={12} sm={6}>
+        <Grid size={{xs: 12, sm: 6}}>
           <TextField
             label="Quantity"
             type="number"
@@ -91,7 +91,7 @@ function BookingFormComponent({ selectedDate }) {
             onChange={(e) => setQuantity(Number(e.target.value))}
           />
         </Grid>
-        <Grid xs={12}>
+        <Grid size={{xs: 12}}>
           <TextField
             label="Your Email"
             type="email"
@@ -100,13 +100,13 @@ function BookingFormComponent({ selectedDate }) {
             onChange={(e) => setCustomerEmail(e.target.value)}
           />
         </Grid>
-        <Grid xs={12}>
+        <Grid size={{xs: 12}}>
           <Button type="submit" variant="contained" color="primary">
             Book Now
           </Button>
         </Grid>
         {message && (
-          <Grid xs={12}>
+          <Grid size={{xs: 12}}>
             <Typography variant="body1" color="secondary">
               {message}
             </Typography>

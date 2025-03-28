@@ -1,13 +1,14 @@
 // src/components/BookingView.js
 import React, { useState, useEffect } from 'react';
 import { Container, Typography, Paper, Box } from '@mui/material';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid2';
 import CalendarView from './CalendarView';
 import BookingFormComponent from './BookingFormComponent';
 
 function BookingView() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [rawBookings, setRawBookings] = useState([]);
+  console.log('rawBookings:', rawBookings);
   const [calendarEvents, setCalendarEvents] = useState([]);
 
   // Fetch bookings from the backend
@@ -74,7 +75,7 @@ function aggregateBookingsByDay(bookings) {
         Customer Booking View
       </Typography>
       <Grid container spacing={4}>
-        <Grid xs={12}>
+        <Grid size={{xs: 12}}>
           <Paper elevation={3} sx={{ padding: 2 }}>
             <CalendarView
               events={calendarEvents}
@@ -86,7 +87,7 @@ function aggregateBookingsByDay(bookings) {
           </Paper>
         </Grid>
         {selectedDate && (
-          <Grid xs={12}>
+          <Grid size={{xs: 12}}>
             <Box sx={{ marginTop: 2 }}>
               <Paper elevation={3} sx={{ padding: 2 }}>
                 <BookingFormComponent selectedDate={selectedDate} />

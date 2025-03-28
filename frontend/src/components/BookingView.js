@@ -16,6 +16,7 @@ function BookingView() {
       .then((response) => response.json())
       .then((data) => {
         // Assuming data is an array of bookings
+
         setRawBookings(data);
       })
       .catch((error) => console.error('Error fetching bookings:', error));

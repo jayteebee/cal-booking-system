@@ -102,7 +102,7 @@ function InventoryManagementComponent() {
       <TableContainer component={Paper} sx={{ marginTop: 2 }}>
         <Table>
           <TableHead>
-            <TableRow>
+            <TableRow key={"key"}>
               <TableCell>ID</TableCell>
               <TableCell>Camera Model</TableCell>
               <TableCell>Lens Type</TableCell>

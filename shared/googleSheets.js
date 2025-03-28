@@ -65,6 +65,28 @@ async function updateInventoryData(updatedData) {
 }
 
 /**
+ * Appends a new inventory item to the "Inventory" sheet.
+ * Expects newItem to be an object with properties: id, cameraModel, lensType, quantity, location.
+ */
+async function appendInventoryItem(newItem) {
+  try {
+    const res = await sheets.spreadsheets.values.append({
+      spreadsheetId: SHEET_ID,
+      range: 'Inventory!A2:E', // Append starting after the header row
+      valueInputOption: 'USER_ENTERED',
+      insertDataOption: 'INSERT_ROWS',
+      requestBody: {
+        values: [[newItem.id, newItem.cameraModel, newItem.lensType, newItem.quantity, newItem.location]],
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.error('Error appending inventory item to Google Sheets:', error);
+    throw error;
+  }
+}
+
+/**
  * Logs a booking by appending a row to the "Bookings" sheet.
  * The row format should match your sheet's expected columns.
  */
@@ -116,6 +138,7 @@ async function logAudit(actionDescription, admin, details) {
 module.exports = {
   getInventoryData,
   updateInventoryData,
+  appendInventoryItem,
   logBooking,
   logAudit,
 };

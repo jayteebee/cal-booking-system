@@ -73,7 +73,7 @@
 // routes/inventory.js
 const express = require('express');
 const router = express.Router();
-const { getInventoryData, updateInventoryData } = require('../../shared/googleSheets.js');
+const { getInventoryData, appendInventoryItem } = require('../../shared/googleSheets.js');
 
 // GET /api/inventory: Retrieve current inventory from Google Sheets.
 router.get('/', async (req, res) => {
@@ -134,35 +134,11 @@ router.post('/', async (req, res) => {
   }
 });
 
-/**
- * Appends a new inventory item to the "Inventory" sheet.
- * Expects newItem to be an object with properties: id, cameraModel, lensType, quantity, location.
- */
-async function appendInventoryItem(newItem) {
-  try {
-    const res = await sheets.spreadsheets.values.append({
-      spreadsheetId: SHEET_ID,
-      range: 'Inventory!A2:E', // Append starting after the header row
-      valueInputOption: 'USER_ENTERED',
-      insertDataOption: 'INSERT_ROWS',
-      requestBody: {
-        values: [[newItem.id, newItem.cameraModel, newItem.lensType, newItem.quantity, newItem.location]],
-      },
-    });
-    return res.data;
-  } catch (error) {
-    console.error('Error appending inventory item to Google Sheets:', error);
-    throw error;
-  }
-}
 
 // Similar changes for PUT and DELETE endpoints
 // For PUT, find the row that matches req.params.id, update the fields, and then update the sheet.
 // For DELETE, remove the row corresponding to req.params.id and update the sheet.
 
-module.exports = {
-  getInventoryData,
-  updateInventoryData,
-  appendInventoryItem,
-};
+module.exports =
+router
 
